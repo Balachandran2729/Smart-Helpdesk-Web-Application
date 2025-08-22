@@ -6,6 +6,7 @@ const {
   getTickets,
   getTicketById,
   updateTicketStatus,
+  addReply,
 } = require('../controllers/tickets.controller');
 
 const { getAuditLogByTicketId } = require('../controllers/audit.controller');
@@ -21,7 +22,8 @@ router.route('/')
 
 router.route('/:id')
   .get(getTicketById); // Any authenticated user (filtered by role in controller)
-
+router.route('/:id/reply')
+  .post(authorize('agent', 'admin'), addReply);
 router.route('/:id/status')
   .put(authorize('agent', 'admin'), updateTicketStatus); // Agent or Admin
 

@@ -16,27 +16,26 @@ const createArticle = async (req, res, next) => {
   }
 };
 
-// @desc    Get KB articles (with search)
-// @route   GET /api/kb
-// @access  Public
 const getArticles = async (req, res, next) => {
   try {
     const query = req.query.query || '';
     const limit = parseInt(req.query.limit) || 10;
-    const articles = await kbService.getArticles(query, limit);
+    const status = req.query.status || null; // Get status from query params
+
+    console.log("KB Controller: Received status filter:", status); // Debug log
+
+    const articles = await kbService.getArticles(query, limit, status); // Pass status
     res.status(200).json({
       success: true,
       count: articles.length,
-      data: articles,
+       articles, // Use 'articles' property as per your current structure
     });
   } catch (error) {
     next(error);
   }
 };
 
-// @desc    Get single KB article
-// @route   GET /api/kb/:id
-// @access  Public
+
 const getArticleById = async (req, res, next) => {
   try {
     const article = await kbService.getArticleById(req.params.id);
