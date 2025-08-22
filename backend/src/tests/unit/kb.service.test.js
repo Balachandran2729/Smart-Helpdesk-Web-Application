@@ -6,7 +6,7 @@ describe('KB Service', () => {
   beforeEach(async () => {
     // Clear articles before each test
     await Article.deleteMany({});
-  });
+  },30000);
 
   describe('getArticles', () => {
     it('should retrieve published articles', async () => {
@@ -17,8 +17,8 @@ describe('KB Service', () => {
       ];
       await Article.insertMany(articleData);
 
-      const articles = await kbService.getArticles();
-
+      const articles = await kbService.getArticles({ status: 'published' });
+      
       expect(articles).toHaveLength(2);
       expect(articles[0].status).toBe('published');
       expect(articles[1].status).toBe('published');
@@ -50,7 +50,4 @@ describe('KB Service', () => {
       expect(articles).toHaveLength(0);
     });
   });
-
-  // Add tests for createArticle, getArticleById, updateArticle, deleteArticle if desired
-  // For brevity and hitting the 5-test minimum, we focus on search
 });

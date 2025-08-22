@@ -1,30 +1,29 @@
 // src/tests/setup.js
 const mongoose = require('mongoose');
 const { MongoMemoryServer } = require('mongodb-memory-server');
+const connectDB = require('../config/db');
 
 let mongoServer;
-
-// --- IMPORTANT: SET ENVIRONMENT VARIABLES FOR TESTS ---
-// Set default environment variables needed for the application to run in tests
-process.env.NODE_ENV = 'test'; // Optional: indicate test environment
-process.env.JWT_SECRET = process.env.JWT_SECRET || 'test-jwt-secret-key-for-testing-only'; // Provide a default for tests
-process.env.PORT = process.env.PORT || '8080'; // If needed
-// MONGO_URI will be set by MongoMemoryServer below
-// --- END ENVIRONMENT VARIABLES ---
-
-// Setup before all tests
+process.env.NODE_ENV = 'test'; 
+process.env.JWT_SECRET = process.env.JWT_SECRET || 'test-jwt-secret-key-for-testing-only'; 
+process.env.PORT = process.env.PORT || '8080'; 
 beforeAll(async () => {
   // Use an in-memory MongoDB instance for isolated tests
   mongoServer = await MongoMemoryServer.create();
   const mongoUri = mongoServer.getUri();
 
-  // Set the MONGO_URI for tests
-  process.env.MONGO_URI = mongoUri; // This is crucial
+  // Override the MONGO_URI environment variable for tests
+  process.env.MONGO_URI = mongoUri;
 
-  await mongoose.connect(mongoUri, {
-    // useNewUrlParser: true, // Not needed for Mongoose 6+
-    // useUnifiedTopology: true, // Not needed for Mongoose 6+
-  });
+  // Connect using your application's logic (which now includes bufferTimeoutMS)
+  await connectDB();
+
+  // --- Optional but good: Explicitly wait for Mongoose connection to be ready ---
+  // Wait until Mongoose connection state is 1 (connected)
+  // while (mongoose.connection.readyState !== 1) {
+  //   await new Promise(resolve => setTimeout(resolve, 100)); // Wait 100ms and check again
+  // }
+  // console.log('Mongoose connection is ready for tests.');
 });
 
 // Teardown after all tests

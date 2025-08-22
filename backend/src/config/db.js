@@ -6,6 +6,7 @@ const connectDB = async () => {
   try {
     const conn = await mongoose.connect(process.env.MONGO_URI, {
       // Options are often not needed but good for clarity/suppressing warnings
+      bufferTimeoutMS: 30000,
     });
 
     logger.info(`MongoDB Connected: ${conn.connection.host}`);
