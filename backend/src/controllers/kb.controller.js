@@ -21,9 +21,6 @@ const getArticles = async (req, res, next) => {
     const query = req.query.query || '';
     const limit = parseInt(req.query.limit) || 10;
     const status = req.query.status || null; // Get status from query params
-
-    console.log("KB Controller: Received status filter:", status); // Debug log
-
     const articles = await kbService.getArticles(query, limit, status); // Pass status
     res.status(200).json({
       success: true,

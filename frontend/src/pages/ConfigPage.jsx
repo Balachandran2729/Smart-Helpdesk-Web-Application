@@ -1,5 +1,5 @@
-// src/pages/ConfigPage.jsx
-import React, { useState, useEffect } from 'react';
+
+import { useState, useEffect } from 'react';
 import { toast } from 'react-toastify';
 import configService from '../services/configService';
 
@@ -18,19 +18,15 @@ const ConfigPage = () => {
       setError(null);
       try {
         const fetchedConfig = await configService.getConfig();
-        console.log("ConfigPage: Fetched config data:", fetchedConfig); // Debug log
-        // Ensure fetchedConfig has the expected properties
         if (fetchedConfig && typeof fetchedConfig === 'object') {
           setConfig({
             autoCloseEnabled: fetchedConfig.autoCloseEnabled ?? true,
             confidenceThreshold: fetchedConfig.confidenceThreshold ?? 0.78,
-            // Add other config properties here if needed in the future
           });
         } else {
           throw new Error('Invalid configuration data received.');
         }
       } catch (err) {
-        console.error('ConfigPage: Fetch config error:', err);
         const errorMsg = err.response?.data?.message || err.message || 'An error occurred while fetching configuration.';
         setError(errorMsg);
         toast.error(`Failed to load config: ${errorMsg}`);
@@ -55,7 +51,6 @@ const ConfigPage = () => {
     setSaving(true);
     setError(null);
     try {
-      // Basic validation
       if (config.confidenceThreshold < 0 || config.confidenceThreshold > 1) {
          toast.warn('Confidence threshold must be between 0 and 1.');
          setSaving(false);
@@ -63,8 +58,7 @@ const ConfigPage = () => {
       }
 
       const updatedConfig = await configService.updateConfig(config);
-      console.log("ConfigPage: Updated config:", updatedConfig); // Debug log
-      setConfig(updatedConfig); // Update local state with response from server
+      setConfig(updatedConfig); 
       toast.success('Configuration updated successfully!');
     } catch (err) {
       console.error('ConfigPage: Update config error:', err);
@@ -111,7 +105,7 @@ const ConfigPage = () => {
               step="0.01"
               value={config.confidenceThreshold}
               onChange={handleChange}
-              className="form-range" // You might need custom CSS for this
+              className="form-range" 
               style={{ width: '100%' }}
             />
             <p className="form-text">Minimum confidence score required for auto-closing tickets.</p>

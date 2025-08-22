@@ -1,11 +1,7 @@
-// src/pages/DashboardPage.jsx
-import React from 'react';
 import { useAuth } from '../context/AuthContext';
 
 const DashboardPage = () => {
   const { user } = useAuth();
-
-  // Simple greeting based on role
   let greeting = "Welcome!";
   let roleSpecificContent = null;
 
@@ -35,7 +31,7 @@ const DashboardPage = () => {
         </ul>
       </div>
     );
-  } else { // Default to user role
+  } else { 
     greeting = `Welcome, ${user?.name}!`;
     roleSpecificContent = (
       <div className="card">

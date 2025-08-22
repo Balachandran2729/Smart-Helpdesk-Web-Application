@@ -1,11 +1,6 @@
-// src/context/AuthContext.jsx
-import React, { createContext, useState, useEffect, useContext } from 'react';
+import { createContext, useState, useEffect, useContext } from 'react';
 import authService from '../services/authService';
-
-// Create the context
 const AuthContext = createContext();
-
-// Custom hook to use the AuthContext
 export const useAuth = () => {
   const context = useContext(AuthContext);
   if (!context) {
@@ -14,33 +9,28 @@ export const useAuth = () => {
   return context;
 };
 
-// AuthProvider component
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [token, setToken] = useState(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [loading, setLoading] = useState(true); // For initial load check
-
-  // Check if user is already logged in (on app load)
+  const [loading, setLoading] = useState(true); 
   useEffect(() => {
     const initializeAuth = async () => {
       const storedToken = localStorage.getItem('token');
       const storedUser = localStorage.getItem('user');
       if (storedToken && storedUser) {
         try {
-          // Basic validation - in a real app, you might verify the token with the backend
           const userData = JSON.parse(storedUser);
           setToken(storedToken);
           setUser(userData);
           setIsAuthenticated(true);
         } catch (err) {
           console.error('Error parsing stored user data:', err);
-          // If parsing fails, clear potentially corrupt data
           localStorage.removeItem('token');
           localStorage.removeItem('user');
         }
       }
-      setLoading(false); // Done checking
+      setLoading(false); 
     };
 
     initializeAuth();
@@ -51,7 +41,7 @@ export const AuthProvider = ({ children }) => {
       const data = await authService.login(credentials);
       if (data.success && data.token && data.user) {
         localStorage.setItem('token', data.token);
-        localStorage.setItem('user', JSON.stringify(data.user)); // Store user data
+        localStorage.setItem('user', JSON.stringify(data.user)); 
         setToken(data.token);
         setUser(data.user);
         setIsAuthenticated(true);
@@ -61,7 +51,6 @@ export const AuthProvider = ({ children }) => {
       }
     } catch (err) {
       console.error('Login error:', err);
-      // Clear state on error
       localStorage.removeItem('token');
       localStorage.removeItem('user');
       setToken(null);
@@ -96,7 +85,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   const logout = () => {
-    authService.logout(); // Clear local storage via service
+    authService.logout(); 
     setToken(null);
     setUser(null);
     setIsAuthenticated(false);
@@ -106,7 +95,7 @@ export const AuthProvider = ({ children }) => {
     user,
     token,
     isAuthenticated,
-    loading, // Expose loading state
+    loading,
     login,
     register,
     logout,

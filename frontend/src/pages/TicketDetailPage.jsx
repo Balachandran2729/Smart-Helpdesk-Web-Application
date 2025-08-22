@@ -100,7 +100,7 @@ const TicketDetailPage = () => {
       setLoadingLogs(true);
       try {
         const logsResponse = await api.get(`/tickets/${id}/audit`);
-        console.log("TicketDetailPage: Raw audit log API response:", logsResponse); // --- ADD THIS LOG ---
+        // console.log("TicketDetailPage: Raw audit log API response:", logsResponse); // --- ADD THIS LOG ---
         if (logsResponse.data && logsResponse.data.success) {
           // --- Robustly find the array ---
           let logsArray = [];
@@ -121,7 +121,7 @@ const TicketDetailPage = () => {
             // Fallback to empty array
             logsArray = [];
           }
-          console.log("TicketDetailPage: Parsed audit logs array:", logsArray); // --- ADD THIS LOG ---
+          // console.log("TicketDetailPage: Parsed audit logs array:", logsArray); // --- ADD THIS LOG ---
           setAuditLogs(logsArray);
         } else {
           console.error('TicketDetailPage: Failed to fetch audit logs or unexpected structure:', logsResponse.data);

@@ -1,12 +1,11 @@
-// src/pages/KBEditorPage.jsx
-import React, { useState, useEffect } from 'react';
+import  { useState, useEffect } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import kbService from '../services/kbService';
 import { FaArrowLeft } from 'react-icons/fa';
 
 const KBEditorPage = () => {
-  const { id } = useParams(); // Get article ID from URL params for editing
+  const { id } = useParams(); 
   const navigate = useNavigate();
   const isEditing = !!id;
 
@@ -16,48 +15,29 @@ const KBEditorPage = () => {
     tags: '',
     status: 'draft',
   });
-  const [loading, setLoading] = useState(false); // For submit button
-  const [fetching, setFetching] = useState(isEditing); // If editing, we need to fetch data
-  const [error, setError] = useState(null); // For fetch errors
-
-  // Fetch article data if editing
+  const [loading, setLoading] = useState(false); 
+  const [fetching, setFetching] = useState(isEditing); 
+  const [error, setError] = useState(null); 
   const fetchArticle = async () => {
   if (isEditing) {
     setFetching(true);
     setError(null);
     try {
-      // --- kbService now returns the article object directly ---
-      const article = await kbService.getArticleById(id); // <-- 'article' is the object, not 'response'
-      console.log("KBEditorPage: Fetched article data:", article); // Debug log
-
-      // --- Check if article data is valid ---
-      // Since kbService should throw on error, we can assume 'article' is the data if we reach here
-      // But good to check if it's an object
+      const article = await kbService.getArticleById(id); 
+      console.log("KBEditorPage: Fetched article data:", article); 
       if (!article || typeof article !== 'object') {
         throw new Error('Invalid article data received.');
       }
-
-      // --- Set form data directly from the article object ---
       setFormData({
         title: article.title || '',
         body: article.body || '',
-        // --- Handle tags correctly ---
-        // Mongoose returns tags as an array. Join them for the input field.
-        tags: Array.isArray(article.tags) ? article.tags.join(', ') : '', // Safely join tags
+        tags: Array.isArray(article.tags) ? article.tags.join(', ') : '',
         status: article.status || 'draft',
       });
-      console.log("KBEditorPage: Form data populated from fetched article.");
-
-      // --- Remove the old 'if (response.success)' check ---
-      // The success check and error throwing based on response.success is no longer needed
-      // because kbService.getArticleById now handles success/failure and throws accordingly.
-
     } catch (err) {
-      console.error('KBEditorPage: Fetch article error:', err); // Detailed error log
-      // --- Improved error message extraction ---
+      console.error('KBEditorPage: Fetch article error:', err);
       let errorMsg = 'An unknown error occurred.';
       if (err.response) {
-        // Axios error with response (less likely now, as service handles it)
         errorMsg = err.response.data?.message || `Server error (${err.response.status})`;
       } else if (err.request) {
         // Network error (less likely)
@@ -104,17 +84,17 @@ const handleSubmit = async (e) => {
       tags: formData.tags.split(',').map(tag => tag.trim()).filter(tag => tag),
     };
 
-    console.log("KBEditorPage: Submitting article data:", dataToSubmit); // <-- Log data being sent
+    // console.log("KBEditorPage: Submitting article data:", dataToSubmit); // <-- Log data being sent
 
     let response;
     if (isEditing) {
-      console.log("KBEditorPage: Calling kbService.updateArticle with ID:", id); // <-- Log
+      // console.log("KBEditorPage: Calling kbService.updateArticle with ID:", id); // <-- Log
       response = await kbService.updateArticle(id, dataToSubmit);
       toast.success('Article updated successfully!');
     } else {
-      console.log("KBEditorPage: Calling kbService.createArticle"); // <-- Log
+      // console.log("KBEditorPage: Calling kbService.createArticle"); // <-- Log
       response = await kbService.createArticle(dataToSubmit);
-      console.log("KBEditorPage: kbService.createArticle response:", response); // <-- Log raw response
+      // console.log("KBEditorPage: kbService.createArticle response:", response); // <-- Log raw response
       toast.success('Article created successfully!');
     }
 

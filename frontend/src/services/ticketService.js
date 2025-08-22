@@ -33,7 +33,6 @@ const addReply = async (ticketId, replyData) => {
     }
 };
 
-// Update ticket status (e.g., for resolving, closing, reopening)
 const updateTicketStatus = async (ticketId, statusData) => {
     try {
         const response = await api.put(`/tickets/${ticketId}/status`, statusData);

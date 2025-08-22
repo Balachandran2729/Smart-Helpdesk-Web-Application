@@ -1,5 +1,4 @@
-// src/pages/CreateTicketPage.jsx
-import React, { useState } from 'react';
+import  { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import ticketService from '../services/ticketService';
@@ -8,8 +7,7 @@ const CreateTicketPage = () => {
   const [formData, setFormData] = useState({
     title: '',
     description: '',
-    category: 'other', // Default category
-    // attachments: '' // Optional: For URL attachments later
+    category: '',
   });
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
@@ -25,19 +23,15 @@ const CreateTicketPage = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
-
-    // Basic validation
     if (!formData.title.trim() || !formData.description.trim()) {
       toast.warn('Title and description are required.');
       setIsLoading(false);
       return;
     }
-
     try {
       const response = await ticketService.createTicket(formData);
       if (response.success) {
         toast.success('Ticket created successfully!');
-        // navigate(`/tickets/${response.ticket.id}`);
         navigate('/tickets');
       } else {
         throw new Error(response.message || 'Failed to create ticket');
