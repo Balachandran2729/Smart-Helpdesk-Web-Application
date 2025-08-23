@@ -1,6 +1,6 @@
 # Smart Helpdesk with Agentic Triage
 
-This is a full-stack web application built as part of the Wexa AI Fresher Assignment. It simulates a smart helpdesk where users can create support tickets. An agentic workflow, running within the Node.js backend, automatically processes these tickets by classifying them, retrieving relevant knowledge base (KB) articles, drafting a reply, and either auto-resolving the ticket or assigning it to a human agent for review.
+This is a full-stack web application. It simulates a smart helpdesk where users can create support tickets. An agentic workflow, running within the Node.js backend, automatically processes these tickets by classifying them, retrieving relevant knowledge base (KB) articles, drafting a reply, and either auto-resolving the ticket or assigning it to a human agent for review.
 
 ## Features
 
