@@ -7,7 +7,7 @@ const CreateTicketPage = () => {
   const [formData, setFormData] = useState({
     title: '',
     description: '',
-    category: '',
+    category: 'other',
   });
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
@@ -32,7 +32,7 @@ const CreateTicketPage = () => {
       const response = await ticketService.createTicket(formData);
       if (response.success) {
         toast.success('Ticket created successfully!');
-        navigate('/tickets');
+        navigate('/app/tickets');
       } else {
         throw new Error(response.message || 'Failed to create ticket');
       }
