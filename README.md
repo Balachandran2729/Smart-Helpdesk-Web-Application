@@ -27,6 +27,11 @@ This is a full-stack web application built as part of the Wexa AI Fresher Assign
 *   Docker and Docker Compose installed on your machine.
 *   Git (to clone the repository).
 
+## To run the Project
+
+*   Frontend : cd <your-project-directory-name> npm run dev
+*   Backend : In parent folder run - docker-compose up
+
 ## Getting Started
 
 These instructions will get you a copy of the project up and running on your local machine.
