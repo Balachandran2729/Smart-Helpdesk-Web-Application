@@ -29,7 +29,7 @@ This is a full-stack web application built as part of the Wexa AI Fresher Assign
 
 ## To run the Project
 
-*   Frontend : cd <your-project-directory-name> npm run dev
+*   Frontend : Run - npm run dev - in Frontend Folder 
 *   Backend : In parent folder run - docker-compose up
 
 ## Getting Started
